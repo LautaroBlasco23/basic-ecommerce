@@ -1,25 +1,19 @@
-# ----------------------------------------------------------
-# START PROJECT USING DOCKER COMPOSE
-# ----------------------------------------------------------
+# ------------------------
+# DOCKER COMPOSE
+# ------------------------
 
 start-project:
 	docker-compose -d up
-
-# ----------------------------------------------------------
-# STOP PROJECT
-# ----------------------------------------------------------
 
 stop-project:
 	docker-compose down
 
 # ------------------------
-# Database Migrations
+# DATABASE MIGRATIONS
 # ------------------------
 
-# migrations
-create-table-in-db:
+create-tables-in-db:
 	cd db/ && sqlx migrate run
 
-# !!!!! Todo
-#delete-table-in-db:
-#	cd db/ && sqlx migrate revert
+delete-tables-in-db:
+	cd db/ && sqlx migrate revert
