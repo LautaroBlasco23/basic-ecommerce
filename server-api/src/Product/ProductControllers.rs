@@ -90,7 +90,7 @@ pub async fn get_product_by_category_controller(path: web::Path<String>) -> impl
 // --------------------------------------------------
 
 #[put("/update/id/{id}")]
-pub async fn modify_product(path: web::Path<Uuid>, info: web::Json<CreateProductEntity>) -> impl Responder {
+pub async fn modify_product_controller(path: web::Path<Uuid>, info: web::Json<CreateProductEntity>) -> impl Responder {
     let product_data = ProductEntity {
         id: path.into_inner(),
         name: info.name.clone(),
@@ -112,7 +112,7 @@ pub async fn modify_product(path: web::Path<Uuid>, info: web::Json<CreateProduct
 // --------------------------------------------------
 
 #[delete("/delete/id/{id}")]
-pub async fn delete_product(path: web::Path<Uuid>) -> impl Responder {
+pub async fn delete_product_controller(path: web::Path<Uuid>) -> impl Responder {
     let id: Uuid = path.into_inner();
 
     let product_id = delete_product_service(id).await;

@@ -17,7 +17,7 @@ pub async fn create_product_service (product_data: CreateProductEntity) -> Uuid 
 
     // Query to db.
     let query_result = sqlx::query!("
-        INSERT INTO PRODUCTS 
+        INSERT INTO products 
         (name, category, price, quantity)
         VALUES ($1, $2, $3, $4)
         RETURNING id
@@ -43,7 +43,7 @@ pub async fn get_products_service () -> Vec<ProductEntity> {
 
     // Query to db.
     let list_of_products: Vec<ProductEntity> = sqlx::query!(
-        "SELECT id, name, price, quantity, category FROM PRODUCTS"
+        "SELECT id, name, price, quantity, category FROM products"
     )
     .fetch_all(&pool.unwrap())
     .await
@@ -69,7 +69,7 @@ pub async fn get_product_by_id_service (user_id: Uuid) -> ProductEntity {
 
     // Query to db.
     let query_result = sqlx::query!(
-        "SELECT id, name, price, quantity, category FROM PRODUCTS WHERE id=$1",
+        "SELECT id, name, price, quantity, category FROM products WHERE id=$1",
         user_id
     )
     .fetch_one(&pool.unwrap())
@@ -91,7 +91,7 @@ pub async fn get_product_by_name_service (user_name: String) -> Vec<ProductEntit
 
 
     let list_of_products = sqlx::query!(
-        "SELECT id, name, price, quantity, category FROM PRODUCTS WHERE name=$1"
+        "SELECT id, name, price, quantity, category FROM products WHERE name=$1"
         , user_name
     )
     .fetch_all(&pool.unwrap())
@@ -115,7 +115,7 @@ pub async fn get_products_by_category_service (category_name: &str) -> Vec<Produ
 
 
     let list_of_products = sqlx::query!(
-        "SELECT id, name, price, quantity, category FROM PRODUCTS WHERE name=$1"
+        "SELECT id, name, price, quantity, category FROM products WHERE name=$1"
         , category_name
     )
     .fetch_all(&pool.unwrap())

@@ -4,7 +4,7 @@ use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
 
 #[derive(sqlx::Type, Serialize, Deserialize, Debug, Clone)]
-#[sqlx(rename_all = "snake_case")]
+#[sqlx(rename_all = "snake_case", type_name = "user_role")]
 pub enum UserRole {
     Customer,
     Employee
