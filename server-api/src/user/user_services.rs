@@ -16,10 +16,11 @@ impl UserServices {
         }
     }
 
-    pub async fn get_all_users_service(&self) -> Result<Vec<UserEntity>, sqlx::Error> {
+    pub async fn get_all_users_service(&self) -> Vec<UserEntity> {
         sqlx::query_as!(UserEntity, r#"SELECT id, name, email, createdat, updatedat, list_of_orders, user_role AS "user_role!: UserRole" FROM users"#)
         .fetch_all(&self.db)
         .await
+        .expect("something went wrong when getting data from db.")
     }
     
     pub async fn get_employees_service(&self) -> Vec<UserEntity> {
@@ -44,7 +45,7 @@ impl UserServices {
         .expect("something went wrong when getting data from db.")
     }
     
-    pub async fn get_user_by_id_service(&self, id: Uuid) -> UserEntity {
+    pub async fn get_user_by_id_service(&self, id: Uuid) -> Result<UserEntity, sqlx::Error> {
         sqlx::query_as!(UserEntity, r#"
         SELECT id, name, email, createdat, updatedat, list_of_orders, user_role AS "user_role!: UserRole"
         FROM users
@@ -52,10 +53,9 @@ impl UserServices {
         id)
         .fetch_one(&self.db)
         .await
-        .expect("something went wrong when getting data from db.")
     }
     
-    pub async fn get_user_by_email_service(&self, email: String) -> UserEntity {
+    pub async fn get_user_by_email_service(&self, email: String) -> Result<UserEntity, sqlx::Error> {
         sqlx::query_as!(UserEntity, r#"
         SELECT id, name, email, createdat, updatedat, list_of_orders, user_role AS "user_role!: UserRole"
         FROM users
@@ -63,7 +63,6 @@ impl UserServices {
         email)
         .fetch_one(&self.db)
         .await
-        .expect("something went wrong when getting data from db.")
     }
     
     pub async fn create_user_service(&self, user_data: CreateUserEntity) -> UserEntity {
@@ -84,7 +83,7 @@ impl UserServices {
         .expect("Something went wrong when inserting data")
     }
     
-    pub async fn modify_user_service(&self, user_data: CreateUserEntity) -> UserEntity {
+    pub async fn modify_user_service(&self, id: Uuid, user_data: CreateUserEntity) -> UserEntity {
         let CreateUserEntity { name, email, list_of_orders, user_role} = user_data;
         let now = Utc::now();
         
@@ -96,9 +95,10 @@ impl UserServices {
         list_of_orders = $3,
         updatedat = $4,
         user_role = $5
+        WHERE id = $6
         RETURNING id, name, email, list_of_orders, createdat, updatedat, user_role AS "user_role!: UserRole"
         "#,
-        name, email, &list_of_orders, now, user_role as UserRole
+        name, email, &list_of_orders, now, user_role as UserRole, id
         )
         .fetch_one(&self.db)
         .await

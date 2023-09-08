@@ -10,10 +10,12 @@ use dotenv::dotenv;
 use actix_cors::Cors;
 use actix_web::{HttpServer, App, web};
 
-// Controllers
+// Product Controllers
 use Product::ProductControllers::{get_products_controller, create_product_controller, get_product_by_name_controller, 
     get_product_by_id_controller, modify_product_controller, delete_product_controller};
-use user::user_controllers::{create_user, get_all_users};
+// User Controllers
+use user::user_controllers::{create_user, get_all_users, get_all_customers, get_all_employees, modify_user, 
+    delete_user, get_user_by_email, get_user_by_id};
 
 
 #[actix_web::main]
@@ -40,10 +42,16 @@ async fn main() -> std::io::Result<()> {
                 .service(modify_product_controller)
                 .service(delete_product_controller)
         )
-        .service( // Routing user controllers
+        .service ( // Routing user controllers
             web::scope("/users")
                 .service(create_user)
                 .service(get_all_users)
+                .service(get_all_customers)
+                .service(get_all_employees)
+                .service(get_user_by_email)
+                .service(get_user_by_id)
+                .service(modify_user)
+                .service(delete_user)
         )
         .service(
             web::scope("/order")
