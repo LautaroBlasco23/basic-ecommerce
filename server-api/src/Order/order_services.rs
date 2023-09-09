@@ -9,14 +9,14 @@ use super::order_entity::{OrderEntity, CreateOrderEntity};
 
 
 
-pub struct OrderRepository {
+pub struct OrderServices {
     db: Pool<Postgres>
 }
 
-impl OrderRepository {
-    pub async fn new() -> OrderRepository {
+impl OrderServices {
+    pub async fn new() -> OrderServices {
         let db_url = &env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-        OrderRepository {
+        OrderServices {
             db: Pool::<Postgres>::connect(db_url).await.expect("can't connect db")
         }
     }
