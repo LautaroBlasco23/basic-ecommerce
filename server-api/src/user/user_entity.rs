@@ -16,9 +16,9 @@ pub struct UserEntity {
     pub name: String,
     pub email: String,
     pub list_of_orders: Vec<Uuid>,
+    pub user_role: UserRole,
     pub createdat: Option<DateTime<Utc>>,
     pub updatedat: Option<DateTime<Utc>>,
-    pub user_role: UserRole,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -46,7 +46,7 @@ pub async fn get_user_by_id(path: web::Path<Uuid>) -> impl Responder {
     .get_user_by_id_service(id).await;
 
     if user.is_err() {
-        HttpResponse::BadRequest().json(json!({
+        HttpResponse::NotFound().json(json!({
             "status": "fail",
             "error": "user not found",
         }))
@@ -66,7 +66,7 @@ pub async fn get_user_by_email(path: web::Path<String>) -> impl Responder {
     .get_user_by_email_service(email).await;
 
     if user.is_err() {
-        HttpResponse::BadRequest().json(json!({
+        HttpResponse::NotFound().json(json!({
             "status": "fail",
             "error": "user not found",
         }))

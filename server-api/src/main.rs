@@ -1,9 +1,7 @@
 // modules
-#[allow(non_snake_case)]
-mod Product;
+mod product;
 mod user;
-#[allow(non_snake_case)]
-mod Order;
+mod order;
 
 use std::env;
 use dotenv::dotenv;
@@ -11,11 +9,13 @@ use actix_cors::Cors;
 use actix_web::{HttpServer, App, web};
 
 // Product Controllers
-use Product::ProductControllers::{get_products_controller, create_product_controller, get_product_by_name_controller, 
+use product::product_controllers::{get_products_controller, create_product_controller, get_product_by_name_controller, 
     get_product_by_id_controller, modify_product_controller, delete_product_controller};
 // User Controllers
 use user::user_controllers::{create_user, get_all_users, get_all_customers, get_all_employees, modify_user, 
     delete_user, get_user_by_email, get_user_by_id};
+// Order Controllers
+use order::order_controllers::{get_all_orders, create_new_order, modify_order, delete_order};
 
 
 #[actix_web::main]
@@ -54,7 +54,11 @@ async fn main() -> std::io::Result<()> {
                 .service(delete_user)
         )
         .service(
-            web::scope("/order")
+            web::scope("/orders")
+                .service(get_all_orders)
+                .service(create_new_order)
+                .service(modify_order)
+                .service(delete_order)
         )
     })
     .bind((url, port.parse().unwrap()))?

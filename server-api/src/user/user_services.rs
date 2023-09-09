@@ -8,6 +8,7 @@ use crate::user::user_entity::{UserEntity, CreateUserEntity, UserRole};
 pub struct UserServices {
     db: Pool<Postgres>
 }
+
 impl UserServices {
     pub async fn new() -> UserServices {
         let db_url = &env::var("DATABASE_URL").expect("DATABASE_URL must be set");

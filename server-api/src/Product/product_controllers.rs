@@ -1,9 +1,9 @@
 use actix_web::{get, post, Responder, HttpResponse, delete, put, web};
 use uuid::Uuid;
-use super::ProductServices::{get_products_service, create_product_service, get_product_by_id_service,
+use super::product_services::{get_products_service, create_product_service, get_product_by_id_service,
                             get_product_by_name_service, modify_product_service, delete_product_service,
                             get_products_by_category_service};
-use super::ProductEntity::{ProductEntity, CreateProductEntity};
+use super::product_entity::{ProductEntity, CreateProductEntity};
 
 // --------------------------------------------------
 // POST REQUESTS

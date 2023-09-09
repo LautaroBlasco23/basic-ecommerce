@@ -1,5 +1,5 @@
 use std::env;
-use super::ProductEntity::{CreateProductEntity, ProductEntity};
+use super::product_entity::{CreateProductEntity, ProductEntity};
 use uuid::Uuid;
 // for database
 use sqlx::Pool;
