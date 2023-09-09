@@ -15,7 +15,8 @@ use product::product_controllers::{get_products_controller, create_product_contr
 use user::user_controllers::{create_user, get_all_users, get_all_customers, get_all_employees, modify_user, 
     delete_user, get_user_by_email, get_user_by_id};
 // Order Controllers
-use order::order_controllers::{get_all_orders, create_new_order, modify_order, delete_order};
+use order::order_controllers::{get_all_orders, create_new_order, modify_order, delete_order,
+    get_order_by_id, get_order_by_user_id};
 
 
 #[actix_web::main]
@@ -33,6 +34,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
         .wrap(cors)
+        // App routes
         .service ( // Routing product controllers
             web::scope("/products")
                 .service(create_product_controller)
@@ -53,9 +55,11 @@ async fn main() -> std::io::Result<()> {
                 .service(modify_user)
                 .service(delete_user)
         )
-        .service(
+        .service( // Routing order controllers
             web::scope("/orders")
                 .service(get_all_orders)
+                .service(get_order_by_id)
+                .service(get_order_by_user_id)
                 .service(create_new_order)
                 .service(modify_order)
                 .service(delete_order)

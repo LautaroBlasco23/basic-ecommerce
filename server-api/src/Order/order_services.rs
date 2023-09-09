@@ -6,9 +6,6 @@ use uuid::Uuid;
 
 use super::order_entity::{OrderEntity, CreateOrderEntity};
 
-
-
-
 pub struct OrderServices {
     db: Pool<Postgres>
 }
@@ -37,14 +34,14 @@ impl OrderServices {
         .await
     }
 
-    pub async fn get_order_by_user_id(&self, user_id: Uuid) -> Result<OrderEntity, sqlx::Error> {
+    pub async fn get_order_by_user_id(&self, user_id: Uuid) -> Result<Vec<OrderEntity>, sqlx::Error> {
         sqlx::query_as!(OrderEntity, 
         "SELECT *
         FROM orders
         WHERE user_id =$1
         ", user_id
         )
-        .fetch_one(&self.db)
+        .fetch_all(&self.db)
         .await
     }
 
